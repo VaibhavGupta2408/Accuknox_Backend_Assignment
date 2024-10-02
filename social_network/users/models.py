@@ -47,8 +47,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_decrypted_email(self):
         if self.encrypted_email:
-            return cipher.decrypt(self.encrypted_email).decode()
+            try:
+                # Convert the BinaryField to bytes if necessary
+                if isinstance(self.encrypted_email, memoryview):
+                    encrypted_data = self.encrypted_email.tobytes()
+                else:
+                    encrypted_data = self.encrypted_email
+
+                # Decrypt the email
+                return cipher.decrypt(encrypted_data).decode()
+            except Exception as e:
+                print(f"Error decrypting email: {e}")
+                return None
         return None
+
 
     @property
     def friends(self):
