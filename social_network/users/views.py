@@ -13,6 +13,7 @@ from .serializers import FriendSerializer
 from .serializers import PendingFriendRequestSerializer
 from .models import UserActivity 
 from .serializers import UserActivitySerializer 
+from django.core.cache import cache 
 
 User = get_user_model()
 
@@ -165,21 +166,19 @@ class FriendsListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Get the accepted friend requests where the current user is either sender or receiver
-        accepted_requests_as_sender = FriendRequest.objects.filter(sender=request.user, status='accepted')
-        accepted_requests_as_receiver = FriendRequest.objects.filter(receiver=request.user, status='accepted')
+        cache_key = f'friends_list_{request.user.id}'
+        cached_friends = cache.get(cache_key)
 
-        # Extract the friends' user objects
-        friends_as_sender = [req.receiver for req in accepted_requests_as_sender]
-        friends_as_receiver = [req.sender for req in accepted_requests_as_receiver]
+        if cached_friends:
+            return Response(cached_friends)
 
-        # Combine friends lists
-        friends = friends_as_sender + friends_as_receiver
+    
+        friends = request.user.friends 
+        serialized_friends = [friend.email for friend in friends] 
 
-        # Serialize the user data
-        serializer = FriendSerializer(friends, many=True)
+        cache.set(cache_key, serialized_friends, timeout=60*15)
 
-        return Response(serializer.data, status=200)
+        return Response(serialized_friends)
 
 
 class PendingFriendRequestPagination(PageNumberPagination):

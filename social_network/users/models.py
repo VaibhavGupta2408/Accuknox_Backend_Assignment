@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from cryptography.fernet import Fernet
 from django.db import models
 from django.conf import settings
+from django.db.models import Q
 
 # Generate and store a key for encryption
 key = Fernet.generate_key()
@@ -24,7 +25,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    encrypted_email = models.BinaryField(blank=True, null=True)  # Add encrypted email field
+    encrypted_email = models.BinaryField(blank=True, null=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     is_active = models.BooleanField(default=True)
@@ -48,6 +49,21 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.encrypted_email:
             return cipher.decrypt(self.encrypted_email).decode()
         return None
+
+    @property
+    def friends(self):
+        # Get the accepted friend requests where the current user is either the sender or receiver
+        accepted_requests_as_sender = FriendRequest.objects.filter(sender=self, status='accepted')
+        accepted_requests_as_receiver = FriendRequest.objects.filter(receiver=self, status='accepted')
+
+        # Extract the friends' user objects
+        friends_as_sender = [req.receiver for req in accepted_requests_as_sender]
+        friends_as_receiver = [req.sender for req in accepted_requests_as_receiver]
+
+        # Combine the friends lists
+        return friends_as_sender + friends_as_receiver
+
+
 
 # Friend Request Model
 class FriendRequest(models.Model):
