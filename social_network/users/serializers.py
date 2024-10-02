@@ -25,9 +25,11 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
 class UserSerializer(serializers.ModelSerializer):
+    decrypted_email = serializers.CharField(source='get_decrypted_email', read_only=True)
+
     class Meta:
         model = User
-        fields = ['id', 'email', 'first_name', 'last_name']
+        fields = ['first_name', 'last_name', 'decrypted_email']
 
 class FriendRequestSerializer(serializers.ModelSerializer):
     class Meta:

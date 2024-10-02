@@ -1,6 +1,11 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from cryptography.fernet import Fernet
 from django.db import models
 from django.conf import settings
+
+# Generate and store a key for encryption
+key = Fernet.generate_key()
+cipher = Fernet(key)
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -19,6 +24,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
+    encrypted_email = models.BinaryField(blank=True, null=True)  # Add encrypted email field
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     is_active = models.BooleanField(default=True)
@@ -31,6 +37,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def save(self, *args, **kwargs):
+        # Encrypt the email before saving
+        if self.email:
+            self.encrypted_email = cipher.encrypt(self.email.encode())
+        super().save(*args, **kwargs)
+
+    def get_decrypted_email(self):
+        if self.encrypted_email:
+            return cipher.decrypt(self.encrypted_email).decode()
+        return None
 
 # Friend Request Model
 class FriendRequest(models.Model):
