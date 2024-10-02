@@ -49,6 +49,8 @@ This project is a backend for a social networking application, featuring user ma
 7. **Run Redis (if not already running):**
    ```bash
       redis-server.exe  # On Windows
+![image](https://github.com/user-attachments/assets/9755a8e3-e44c-4402-b250-17d2998e04af)
+
 
 8. **Run the Django development server:**
    ```bash
