@@ -13,8 +13,7 @@ This project is a backend for a social networking application, featuring user ma
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
-   cd <your-repo-directory>
+   git clone [<your-repo-url>](https://github.com/VaibhavGupta2408/Accuknox_Backend_Assignment)
 
 2. **Create and activate a virtual environment:**
    ```bash
@@ -26,13 +25,14 @@ This project is a backend for a social networking application, featuring user ma
    pip install -r requirements.txt
 
 4. **Set up PostgreSQL (or any other preferred database):**
+   ![image](https://github.com/user-attachments/assets/65842f82-c41d-4f94-a098-245a14b81927)
    - Create a database and update the **DATABASES** setting in **settings.py**.
    - PostgreSQL:
      ```bash
      DATABASES = {
        'default': {
            'ENGINE': 'django.db.backends.postgresql',
-           'NAME': 'your_db_name',
+           'NAME': 'social_network_db',
            'USER': 'your_db_user',
            'PASSWORD': 'your_db_password',
            'HOST': 'localhost',
@@ -40,20 +40,21 @@ This project is a backend for a social networking application, featuring user ma
        }
       }
 
-5. **Run database migrations:**
+
+6. **Run database migrations:**
    ```bash
    python manage.py makemigrations
    python manage.py migrate
 
-6. **Run Redis (if not already running):**
+7. **Run Redis (if not already running):**
    ```bash
       redis-server.exe  # On Windows
 
-7. **Run the Django development server:**
+8. **Run the Django development server:**
    ```bash
       python manage.py runserver
 
-8. **Create a superuser for the admin panel (optional):**
+9. **Create a superuser for the admin panel (optional):**
    ```bash
       python manage.py createsuperuser
 
@@ -66,6 +67,8 @@ This project is a backend for a social networking application, featuring user ma
 - Method: POST
 - Payload: { "email": "user@example.com", "password": "yourpassword" }
 - Response: User creation success message.
+  ![image](https://github.com/user-attachments/assets/cefd0c71-9f18-4db7-9962-a81c171c6062)
+
 
 ## User Login
 - URL: 
@@ -74,6 +77,7 @@ This project is a backend for a social networking application, featuring user ma
 - Method: POST
 - Payload: { "email": "user@example.com", "password": "yourpassword" }
 - Response: JWT access and refresh tokens.
+  ![image](https://github.com/user-attachments/assets/65379671-3fb0-4bec-b031-c318f118f61c)
 
 ## Send Friend Request
 - URL: 
@@ -81,6 +85,7 @@ This project is a backend for a social networking application, featuring user ma
    /api/users/friend-request/send/<receiver_id>/
 - Method: POST
 - Response: Success or failure message.
+  ![image](https://github.com/user-attachments/assets/5b650a43-d4f1-4b56-9c0b-ea3e15d657b9)
 
 ## Respond to Friend Request
 - URL: 
@@ -89,6 +94,8 @@ This project is a backend for a social networking application, featuring user ma
 - Method: POST
 - Actions: Accept or Reject (accept, reject)
 - Response: Friend request status update message.
+  ![image](https://github.com/user-attachments/assets/4674129d-92dc-4791-af40-c12d61c9f9f2)
+
 
 ## View Friends List
 - **URL:** `/api/users/friends/`
@@ -103,6 +110,9 @@ This project is a backend for a social networking application, featuring user ma
       "status": "Accepted"
     }
   ]
+-- Because there is no friend (In arnav case)
+![image](https://github.com/user-attachments/assets/86b6f2cb-1ace-45ff-9d53-8ab001785521)
+
 
 ## Search Users
 - URL: 
@@ -111,6 +121,8 @@ This project is a backend for a social networking application, featuring user ma
 - Method: GET
 - Query Param: search=<keyword>
 - Response: List of users matching the search keyword.
+  ![image](https://github.com/user-attachments/assets/6bd03a2b-a447-4368-bba7-143ef0c07eeb)
+
 
 ## View User Activities
 - URL: 
@@ -118,6 +130,14 @@ This project is a backend for a social networking application, featuring user ma
       /api/users/activity/
 - Method: GET
 - Response: List of user activities.
+  ![image](https://github.com/user-attachments/assets/b4909826-6c78-4598-9fbf-be1d8de99ca4)
+
+## User Logout
+- URL:
+  ```bash
+     /api/users/logout/
+- Method: POST
+  ![image](https://github.com/user-attachments/assets/cbe3a10c-2509-4c72-8d75-8ce02b52285e)
 
 
 # Postman Collection
