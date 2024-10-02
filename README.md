@@ -21,10 +21,11 @@ This project is a backend for a social networking application, featuring user ma
     source env/bin/activate  # On Windows: env\Scripts\activate
 
 3. **Install the required dependencies:**
-   ```bash
+      ```bash
    pip install -r requirements.txt
+   - Like : Install Django and Django Rest Framework `pip install django djangorestframework psycopg2-binary djangorestframework-simplejwt django-cors-headers`
 
-4. **Set up PostgreSQL (or any other preferred database):**
+5. **Set up PostgreSQL (or any other preferred database):**
    ![image](https://github.com/user-attachments/assets/65842f82-c41d-4f94-a098-245a14b81927)
    - Create a database and update the **DATABASES** setting in **settings.py**.
    - PostgreSQL:
