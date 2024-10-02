@@ -121,11 +121,18 @@ This project is a backend for a social networking application, featuring user ma
 
 
 # Postman Collection
-```bash
-   Download the Postman Collection
+- Download the Postman Collection
 
+# Requirements
 
+- Python 3.x
+- Django
+- Django REST Framework
+- djangorestframework-simplejwt
+- psycopg2
+- Redis
 
-
+# Dependencies:
+- All dependencies are listed in **requirements.txt**.
      
    
