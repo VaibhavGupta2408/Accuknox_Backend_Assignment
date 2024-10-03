@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: social_network_db
+      POSTGRES_USER: vaibhav
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"  # Exposes PostgreSQL to the host machine for local access
+    networks:
+      - app-network
+
+  redis:
+    image: redis:6
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app  # Mounts the current directory to the app inside the container
+    ports:
+      - "8000:8000"  # Exposes the web server
+    environment:
+      - DJANGO_DB_NAME=social_network_db
+      - DJANGO_DB_USER=postgres_user
+      - DJANGO_DB_PASSWORD=postgres_password
+      - DJANGO_DB_HOST=db
+      - DJANGO_REDIS_HOST=redis
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  app-network:
