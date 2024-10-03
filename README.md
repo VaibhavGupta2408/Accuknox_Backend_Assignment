@@ -146,6 +146,36 @@ This project is a backend for a social networking application, featuring user ma
 # Postman Collection
 - Download the Postman Collection
 
+# Containerization with Docker
+- To containerize the application and run it using Docker, follow these steps:
+
+## Ensure Docker is installed on your system:
+- You can install Docker from here.
+## Build the Docker image: 
+`docker-compose build`
+
+## Run the Docker containers:
+`docker-compose up`
+- This will start the following services:
+- PostgreSQL database: The application uses PostgreSQL as the database.
+- Redis: Redis is used for caching.
+- Django app: The Django REST API will be available at http://localhost:8000.
+
+## Accessing the app:
+- Open http://localhost:8000 in your browser to interact with the API or check API endpoints using Postman.
+- The PostgreSQL database is accessible at localhost:5432.
+- Example for accessing the database:
+  `Host: localhost
+   Port: 5432
+   Username: <your_db_user>
+   Password: <your_db_password>`
+5. **Running migrations inside the Docker container: After starting the containers, you may need to run migrations for the Django app:**
+   `docker-compose exec web python manage.py migrate`
+
+6. **Stop and remove the Docker containers: To stop the containers, run:**
+   `docker-compose down`
+
+
 # Requirements
 
 - Python 3.x
@@ -154,6 +184,7 @@ This project is a backend for a social networking application, featuring user ma
 - djangorestframework-simplejwt
 - psycopg2
 - Redis
+- Docker
 
 # Dependencies:
 - All dependencies are listed in **requirements.txt**.
